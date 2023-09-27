@@ -1,0 +1,40 @@
+version: '3'
+services:
+  felix-db:
+    image: 'felix-db'
+    ports:
+      - "3306:3306"
+    volumes:
+      - felixdbdata:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=dbadmin
+  
+  felix-cache:
+    image: memcached
+    ports:
+      - "11211:11211"
+  
+  felix-mq:
+    image: rabbitmq
+    ports:
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    
+  felix-app:
+    image: felix-app
+    ports:
+      - "9000:8080"
+    volumes:
+      - felixappdata:/usr/local/tomcat/webapps
+  
+  felix-web:
+    image: felix-web
+    ports:
+      - "80:80"
+
+volumes:
+  felixdbdata: {}
+  felixappdata: {}
+  

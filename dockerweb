@@ -1,0 +1,6 @@
+FROM nginx
+LABEL project="felix"
+LABEL author="omkar"
+
+RUN rm -rf /etc/ngnix/conf.d/default.conf
+COPY felix.conf /etc/ngnix/conf.d/felix-app.conf

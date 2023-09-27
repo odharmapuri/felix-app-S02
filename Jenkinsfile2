@@ -1,0 +1,25 @@
+pipeline {
+	agent any
+	
+	environment {
+        app_name = "felix-app"
+        docker_repo = "odharmapuri"
+	}
+
+    stages{
+        stage('Docker run'){
+            steps {
+                script{
+                    sh 'docker run ${docker_repo}/${app_name}'
+                }
+            }
+            post {
+                success {
+                    mail to: 'odharmapuri@gmail.com', 
+                    subject: 'Pipeline Success: ${currentBuild.fullDisplayName}',
+                    body: "Success ${env.BUILD_URL}"
+                }
+            }
+        }
+    }
+}

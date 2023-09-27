@@ -1,0 +1,11 @@
+#to add jenkins user to docker group and run docker commands in pipeline
+sudo usermod -aG docker jenkins
+
+#remove all docker images:
+docker rmi $(docker images -a -q)
+
+
+docker run -d -p 9000:8080 --name tapp tomcat
+docker exec -it tapp /bin/bash
+ cp -R webapps.dist/* webapps/
+ weapps.dist
