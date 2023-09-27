@@ -9,3 +9,5 @@ docker run -d -p 9000:8080 --name tapp tomcat
 docker exec -it tapp /bin/bash
  cp -R webapps.dist/* webapps/
  weapps.dist
+
+ docker run  -d -p 80:80 --name felix-web felix-web
