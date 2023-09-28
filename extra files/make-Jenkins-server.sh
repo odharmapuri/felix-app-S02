@@ -30,3 +30,16 @@ sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo usermod -aG docker ubuntu
 sudo usermod -aG docker Jenkins
+
+#OPTIONAL PROJECT
+git clone -b master https://gitlab.com/odharmapuri1/felix-app2.git
+sudo mv felix-app2/* .
+sudo mvn clean install
+
+sudo chmod 777 dockerbuild.sh
+./dockerbuild.sh
+sudo chmod 777 dockertag.sh
+./dockertag.sh
+docker compose up -d
+docker images
+docker ps

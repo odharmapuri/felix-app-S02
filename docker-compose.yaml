@@ -1,7 +1,7 @@
 version: '3'
 services:
   felix-db:
-    image: 'odharmapuri/felix-db:${BUILD_NUMBER}'
+    image: 'odharmapuri/felix-db'
     ports:
       - "3306:3306"
     volumes:
@@ -23,14 +23,14 @@ services:
       - RABBITMQ_DEFAULT_PASS=admin
     
   felix-app:
-    image: 'odharmapuri/felix-app:${BUILD_NUMBER}'
+    image: 'odharmapuri/felix-app'
     ports:
       - "8081:8080"
     volumes:
       - felixappdata:/usr/local/tomcat/webapps
   
   felix-web:
-    image: 'odharmapuri/felix-web:${BUILD_NUMBER}'
+    image: 'odharmapuri/felix-web'
     ports:
       - "80:80"
 
