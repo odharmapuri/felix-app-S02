@@ -2,15 +2,16 @@ pipeline {
 	agent any
 	
 	environment {
-        app_name = "felix-app"
+        PROJECT = "felix"
         docker_repo = "odharmapuri"
 	}
 
     stages{
-        stage('Docker run'){
+        stage('deploy to docker'){
             steps {
                 script{
-                    sh 'docker run ${docker_repo}/${app_name}'
+                    sh 'sudo chmod 777 docker-compose.yaml'
+                    sh './docker-compose.yaml'
                 }
             }
             post {

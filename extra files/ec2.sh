@@ -3,15 +3,6 @@ sudo apt update
 #install java and maven
 sudo apt install default-jdk maven git -y
 
-#install jenkins
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
-  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-sudo apt-get update
-sudo apt-get install -y jenkins
-
 #Install Docker
 #add docker official gpg key
 sudo apt-get update
@@ -28,5 +19,13 @@ echo \
 sudo apt-get update
 
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo usermod -aG docker ubuntu
-sudo usermod -aG docker Jenkins
+
+git clone -b master https://gitlab.com/odharmapuri1/felix-app2.git
+sudo mv felix-app2/* .
+sudo mvn clean install
+sudo docker build -t felix-app -f dockerapp .
+sudo docker build -t felix-db -f dockerdb .
+sudo docker build -t felix-web -f dockerweb .
+sudo docker pull rabbitmq
+sudo docker pull memcached
+sudo docker compose up -d

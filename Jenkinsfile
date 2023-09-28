@@ -2,24 +2,23 @@ pipeline {
 	agent any
 	
 	environment {
-        app_name = "felix-app"
+        project = "felix"
         docker_repo = "odharmapuri"
 	}
 
     stages{
-        /*stage('Git clone'){
+        stage('Git clone'){
             steps {
                 script{
-                    sh 'rm -rf /var/lib/jenkins/workspace/kiwi-app/*'
-                    sh 'git clone -b master https://gitlab.com/odharmapuri1/felix-app.git'
-                    sh 'mv /var/lib/jenkins/workspace/kiwi-app/felix-app/* .'
+                    sh 'rm -rf /var/lib/jenkins/workspace/felix-app/*'
+                    sh 'git clone -b master https://gitlab.com/odharmapuri1/felix-app2.git'
+                    sh 'mv /var/lib/jenkins/workspace/felix-app/felix-app2/* .'
                 }
             }
-        }*/
+        }
         stage('BUILD'){
             steps {
                 script{
-                    //sh 'cd kiwi-infra/'
                     //sh 'mvn -f kiwi-infra/pom.xml install'
                     sh 'mvn clean install'
                 }
@@ -52,10 +51,12 @@ pipeline {
             }
             }
         }*/
-        stage ('Build Docker Image'){
+        stage ('Build Docker Images'){
             steps {
                 script {
-                    sh 'docker build -t ${app_name} .'
+                    sh 'sudo chmod 777 dockerbuild.sh'
+                    sh './dockerbuild.sh'
+                    //sh 'docker build -t ${app_name} .'
                     //docker.build "mycorp/myapp:${env.BUILD_TAG}"
                 }
             }
@@ -63,7 +64,9 @@ pipeline {
         stage('Tag Docker Image') {
             steps {
                 script {
-                    sh 'docker tag $app_name ${docker_repo}/${app_name}:${BUILD_ID}'
+                    sh 'sudo chmod 777 dockertag.sh'
+                    sh './dockertag.sh'
+                    //sh 'docker tag $app_name ${docker_repo}/${app_name}:${BUILD_ID}'
                     //docker.image("felix-app").tag("felix-app:latest")$BRANCH_NAME$BUILD_ID
                 }
             }
@@ -73,7 +76,9 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'dockerhubpwd', variable: 'dockerhubpwd')]) {
                     sh 'docker login -u odharmapuri -p ${dockerhubpwd}'
-                    sh 'docker push ${docker_repo}/${app_name}:${BUILD_ID}'
+                    sh 'docker push ${docker_repo}/${project}-app:${BUILD_NUMBER}'
+                    sh 'docker push ${docker_repo}/${project}-db:${BUILD_NUMBER}'
+                    sh 'docker push ${docker_repo}/${project}-web:${BUILD_NUMBER}'
                     }
                 }
             }
