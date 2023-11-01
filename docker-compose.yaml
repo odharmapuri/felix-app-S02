@@ -25,7 +25,7 @@ services:
   felix-app:
     image: 'odharmapuri/felix-app:v1'
     ports:
-      - "8081:8080"
+      - "8080:8080"
     volumes:
       - felixappdata:/usr/local/tomcat/webapps
   

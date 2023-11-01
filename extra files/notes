@@ -10,4 +10,19 @@ docker exec -it tapp /bin/bash
  cp -R webapps.dist/* webapps/
  weapps.dist
 
+ docker rm felix-web
+ docker rmi felix-web
+ vi felix.conf
+ vi docker-compose
+ docker build -t felix-web -f dockerweb .
  docker run  -d -p 80:80 --name felix-web felix-web
+ docker logs felix-web
+ docker compose up -d
+ docker compose down
+
+
+ #copy ssh keys from windows to linux cloud machine
+ scp -i ~\lab1.pem '.\extra files\make-Jenkins-server.sh' ubuntu@54.82.7.77:~/.
+
+
+ 

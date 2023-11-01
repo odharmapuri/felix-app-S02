@@ -1,7 +1,7 @@
 #!/bin/bash
-sudo apt update
+sudo apt update -y
 #install java and maven
-sudo apt install default-jdk maven git -y
+sudo apt install default-jdk maven git lynx -y
 
 #Install Docker
 #add docker official gpg key
@@ -19,13 +19,20 @@ echo \
 sudo apt-get update
 
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo usermod -aG docker ubuntu
+sudo systemctl restart docker
 
 git clone -b master https://gitlab.com/odharmapuri1/felix-app2.git
 sudo mv felix-app2/* .
 sudo mvn clean install
-sudo docker build -t felix-app -f dockerapp .
-sudo docker build -t felix-db -f dockerdb .
-sudo docker build -t felix-web -f dockerweb .
-sudo docker pull rabbitmq
-sudo docker pull memcached
+sudo chmod u+x dockerbuild.sh
+sudo chmod u+x dockertag.sh
+./dockerbuild.sh
+./dockertag.sh
+#sudo docker build -t felix-app -f dockerapp .
+#sudo docker build -t felix-db -f dockerdb .
+#sudo docker build -t felix-web -f dockerweb .
+#sudo docker pull rabbitmq
+#sudo docker pull memcached
 sudo docker compose up -d
+sudo docker ps
