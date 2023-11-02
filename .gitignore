@@ -3,6 +3,7 @@
 #*.pem
 #*.hcl
 .terraform.lock.hcl
+terraform.*
 .secret
 # ignore ALL files in ANY directory named temp
 .terraform/
